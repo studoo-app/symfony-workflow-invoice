@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails Facture N° {{ invoice.id }} / {{ invoice.client }} {% endblock %}
+
+{% block body %}
+
+    <div class="row mt-2">
+        <div class="col-12">
+            {% for label, messages in app.flashes(['success']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        <p>{{ message }}</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-header h5">Facture N° {{ invoice.id }} / {{ invoice.client }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-10">
+                    <dl class="row">
+                        <dt class="col-sm-3">Statut</dt>
+                        <dd class="col-sm-9">{{ invoice.status }}</dd>
+                        <dt class="col-sm-3">Numéro</dt>
+                        <dd class="col-sm-9">{{ invoice.id }}</dd>
+                        <dt class="col-sm-3">Mise à jour</dt>
+                        <dd class="col-sm-9">{{ invoice.udpatedAt | date('d/m/Y H:i') }}</dd>
+                        <dt class="col-sm-3">Date</dt>
+                        <dd class="col-sm-9">{{ invoice.date | date('d/m/Y') }}</dd>
+                        <dt class="col-sm-3">Montant</dt>
+                        <dd class="col-sm-9">{{ invoice.total }} €</dd>
+                    </dl>
+                </div>
+                <div class="col-2 vstack gap-2">
+                    <a href="#" class="btn btn-secondary">Editer</a>
+                    <a href="#" class="btn btn-secondary">Envoyer</a>
+                    <a href="#" class="btn btn-secondary">Réglée</a>
+                    <a href="#" class="btn btn-secondary">Impayée</a>
+                    <a href="#" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+            <a href="{{ path('app_invoice') }}" class="btn btn-danger">Retour</a>
+        </div>
+    </div>
+{% endblock %}

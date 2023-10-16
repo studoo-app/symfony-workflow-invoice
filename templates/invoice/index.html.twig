@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invoices App{% endblock %}
+
+{% block body %}
+
+    <div class="row mt-2">
+        <div class="col-12">
+            {% for label, messages in app.flashes(['success']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        <p>{{ message }}</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-header">Liste des factures</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <a href="{{ path('app_invoice_generate') }}" class="btn btn-primary btn-lg">Générer</a>
+                </div>
+                <hr/>
+                <div class="col-12">s
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invoice in invoices %}
+                                    <tr>
+                                        <td>{{ invoice.date |date("d/m/Y") }}</td>
+                                        <td>{{ invoice.client }}</td>
+                                        <td>{{ invoice.total }} €</td>
+                                        <td>{{ invoice.status }}</td>
+                                        <td>
+                                            <a href="{{ path('app_invoice_details',{id:invoice.id}) }}" class="btn btn-secondary">Détails</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="alert alert-warning">
+                                                Pas de factures disponibles
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+{% endblock %}
