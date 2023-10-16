@@ -1,21 +1,34 @@
-version: '3'
-
+version: "3.8"
 services:
-###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    container_name: workflow-invoice-database
+    image: mariadb:10.5.8
+    ports:
+      - "3306:3306"
+    restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      MYSQL_DATABASE: app_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
-
+      - ./var/dbdata:/var/lib/mysql
+  phpmyadmin:
+    container_name: workflow-invoice-pma
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 1G
+      MEMORY_LIMIT: 512M
+      MAX_EXECUTION_TIME: 0
+    restart: always
+    links:
+      - database
+  mailer:
+    container_name: workflow-invoice-mailer
+    image: schickling/mailcatcher
+    ports: [ "1025", "1080" ]
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  dbdata:
