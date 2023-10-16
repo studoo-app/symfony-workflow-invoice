@@ -9,11 +9,13 @@ Illustrer le workflow du cycle de vie d'une facture
 ### Diagramme du workflow
 ```mermaid
     graph LR
-        A["Editée"]-->B["Envoyée"];
-        B["Envoyée"]-->C["Réglée"];
-        A["Editée"]-->D["Annulée"];
-        B["Envoyée"]-->D["Annulée"];
-        B["Envoyée"]-->E["Impayée"];
+        A["Générée"]-->B["Editée"]
+        B["Editée"]-->C["Envoyée"];
+        C["Envoyée"]-->D["Réglée"];
+        A["Générée"]-->E["Annulée"];
+        B["Editée"]-->E["Annulée"];
+        C["Envoyée"]-->E["Annulée"];
+        C["Envoyée"]-->F["Impayée"];
         
 ```
 
