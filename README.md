@@ -14,7 +14,6 @@ Illustrer le workflow du cycle de vie d'une facture
         C["Envoyée"]-->D["Réglée"];
         A["Générée"]-->E["Annulée"];
         B["Editée"]-->E["Annulée"];
-        C["Envoyée"]-->E["Annulée"];
         C["Envoyée"]-->F["Impayée"];
         
 ```
