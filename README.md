@@ -6,15 +6,26 @@ Projet démo du composant workflow Symfony
 
 Illustrer le workflow du cycle de vie d'une facture
 
-Editer -> Envoyée -> En attente de reglement -> Réglée / Annulée
+### Diagramme du workflow
+```mermaid
+    graph LR
+        A["Editée"]-->B["Envoyée"];
+        B["Envoyée"]-->C["Réglée"];
+        A["Editée"]-->D["Annulée"];
+        B["Envoyée"]-->D["Annulée"];
+        B["Envoyée"]-->E["Impayée"];
+        
+```
 
-Objet facture:
- - createdAt
- - GeneratedAt
- - SendAt
- - PaidAt
- - CancelAt
- - Date
- - Total
- - client
- - Status -> receptacle du workflow
+## Composantes du projet
+
+### Objet Invoice
+
+ - updatedAt - Date
+ - Date - Date
+ - Total - Integer
+ - client - String
+ - Status - String -> receptacle du workflow
+
+
+
