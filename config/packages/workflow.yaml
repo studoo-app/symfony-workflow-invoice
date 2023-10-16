@@ -1,2 +1,38 @@
 framework:
-    workflows: null
+    workflows:
+        invoice_status:
+            type: state_machine
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Invoice
+            initial_marking: 'Générée'
+            places:
+                - 'Générée'
+                - 'Editée'
+                - 'Envoyée'
+                - 'Réglée'
+                - 'Impayée'
+                - 'Annulée'
+            transitions:
+                to_edit:
+                    from: 'Générée'
+                    to: 'Editée'
+                to_send:
+                    from: 'Editée'
+                    to: 'Envoyée'
+                to_paid:
+                    from: 'Envoyée'
+                    to: 'Réglée'
+                to_unpaid:
+                    from: 'Envoyée'
+                    to: 'Impayée'
+                to_cancel_from_generated:
+                    from: 'Générée'
+                    to: 'Annulée'
+                to_cancel_from_edited:
+                    from: 'Editée'
+                    to: 'Annulée'

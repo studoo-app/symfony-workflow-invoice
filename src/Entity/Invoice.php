@@ -32,7 +32,7 @@ class Invoice
     public function __construct()
     {
         $this->udpatedAt = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $this->status = "Générée";
+        //$this->status = "Générée";
     }
 
 

@@ -36,11 +36,29 @@
                     </dl>
                 </div>
                 <div class="col-2 vstack gap-2">
-                    <a href="#" class="btn btn-secondary">Editer</a>
-                    <a href="#" class="btn btn-secondary">Envoyer</a>
-                    <a href="#" class="btn btn-secondary">Réglée</a>
-                    <a href="#" class="btn btn-secondary">Impayée</a>
-                    <a href="#" class="btn btn-secondary">Annuler</a>
+                    {% if workflow_can(invoice, 'to_edit') %}
+                        <a href="{{ path('app_invoice_edit',{id:invoice.id}) }}" class="btn btn-secondary">Editer</a>
+                    {% endif %}
+                    {% if workflow_can(invoice, 'to_send') %}
+                        <a href="#" class="btn btn-secondary">Envoyer</a>
+                    {% endif %}
+                    {% if workflow_can(invoice, 'to_paid') %}
+                        <a href="#" class="btn btn-secondary">Réglée</a>
+                    {% endif %}
+                    {% if workflow_can(invoice, 'to_unpaid') %}
+                        <a href="#" class="btn btn-secondary">Impayée</a>
+                    {% endif %}
+                    {% if workflow_can(invoice, 'to_cancel') %}
+                        <a href="#" class="btn btn-secondary">Annuler</a>
+                    {% endif %}
+                    {% if workflow_can(invoice, 'to_cancel_from_generated') %}
+                        <a href="#" class="btn btn-secondary">Annuler</a>
+                    {% endif %}
+                    {% if workflow_can(invoice, 'to_cancel_from_edited') %}
+                        <a href="#" class="btn btn-secondary">Annuler</a>
+                    {% endif %}
+
+
                 </div>
             </div>
 

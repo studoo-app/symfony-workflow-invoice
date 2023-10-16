@@ -10,9 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class InvoiceController extends AbstractController
 {
+
+    public function __construct(
+        // Symfony will inject the 'blog_publishing' workflow configured before
+        private readonly WorkflowInterface $invoiceStatusStateMachine,
+        private readonly EntityManagerInterface $manager
+    ) {
+    }
+
     #[Route('/', name: 'app_invoice')]
     public function index(InvoiceRepository $invoiceRepository): Response
     {
@@ -22,7 +31,7 @@ class InvoiceController extends AbstractController
     }
 
     #[Route('/generate', name: 'app_invoice_generate')]
-    public function generate(EntityManagerInterface $manager): RedirectResponse
+    public function generate(): RedirectResponse
     {
         $faker = Factory::create('fr_FR');
 
@@ -30,9 +39,10 @@ class InvoiceController extends AbstractController
         $invoice->setDate($faker->dateTimeThisMonth);
         $invoice->setClient($faker->company);
         $invoice->setTotal($faker->randomNumber(4));
+        $this->invoiceStatusStateMachine->getMarking($invoice);
 
-        $manager->persist($invoice);
-        $manager->flush();
+        $this->manager->persist($invoice);
+        $this->manager->flush();
 
         $this->addFlash("success","Facture générée avec succès !");
 
@@ -43,5 +53,16 @@ class InvoiceController extends AbstractController
     public function details(Invoice $invoice): Response
     {
         return $this->render('invoice/show.html.twig',["invoice"=>$invoice]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_invoice_edit')]
+    public function edit(Invoice $invoice){
+        if($this->invoiceStatusStateMachine->can($invoice,'to_edit')){
+            $this->invoiceStatusStateMachine->apply($invoice,'to_edit');
+            $this->manager->persist($invoice);
+            $this->manager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
     }
 }
