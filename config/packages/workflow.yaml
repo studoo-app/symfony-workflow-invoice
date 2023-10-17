@@ -30,9 +30,7 @@ framework:
                 to_unpaid:
                     from: 'Envoyée'
                     to: 'Impayée'
-                to_cancel_from_generated:
-                    from: 'Générée'
+                to_cancel:
+                    from: ['Générée','Editée']
                     to: 'Annulée'
-                to_cancel_from_edited:
-                    from: 'Editée'
-                    to: 'Annulée'
+

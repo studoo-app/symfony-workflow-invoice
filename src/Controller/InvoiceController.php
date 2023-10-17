@@ -65,4 +65,48 @@ class InvoiceController extends AbstractController
 
         return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
     }
+
+    #[Route('/{id}/send', name: 'app_invoice_send')]
+    public function send(Invoice $invoice){
+        if($this->invoiceStatusStateMachine->can($invoice,'to_send')){
+            $this->invoiceStatusStateMachine->apply($invoice,'to_send');
+            $this->manager->persist($invoice);
+            $this->manager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
+    }
+
+    #[Route('/{id}/paid', name: 'app_invoice_paid')]
+    public function paid(Invoice $invoice){
+        if($this->invoiceStatusStateMachine->can($invoice,'to_paid')){
+            $this->invoiceStatusStateMachine->apply($invoice,'to_paid');
+            $this->manager->persist($invoice);
+            $this->manager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
+    }
+
+    #[Route('/{id}/unpaid', name: 'app_invoice_unpaid')]
+    public function unpaid(Invoice $invoice){
+        if($this->invoiceStatusStateMachine->can($invoice,'to_unpaid')){
+            $this->invoiceStatusStateMachine->apply($invoice,'to_unpaid');
+            $this->manager->persist($invoice);
+            $this->manager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
+    }
+
+    #[Route('/{id}/cancel', name: 'app_invoice_cancel')]
+    public function cancel(Invoice $invoice){
+        if($this->invoiceStatusStateMachine->can($invoice,'to_cancel')){
+            $this->invoiceStatusStateMachine->apply($invoice,'to_cancel');
+            $this->manager->persist($invoice);
+            $this->manager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
+    }
 }
