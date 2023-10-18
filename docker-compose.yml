@@ -9,6 +9,7 @@ services:
     environment:
       MYSQL_DATABASE: app_db
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      TZ: Europe/Paris
     volumes:
       - ./var/dbdata:/var/lib/mysql
   phpmyadmin:
