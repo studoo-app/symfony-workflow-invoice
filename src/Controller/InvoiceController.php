@@ -109,4 +109,16 @@ class InvoiceController extends AbstractController
 
         return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
     }
+
+    #[Route('/{id}/{targetStatus}', name: 'app_invoice_apply_workflow')]
+    public function applyWorkflow(Invoice $invoice, string $targetStatus): RedirectResponse
+    {
+        if($this->invoiceStatusStateMachine->can($invoice,$targetStatus)){
+            $this->invoiceStatusStateMachine->apply($invoice,$targetStatus);
+            $this->manager->persist($invoice);
+            $this->manager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_details',['id'=>$invoice->getId()]);
+    }
 }

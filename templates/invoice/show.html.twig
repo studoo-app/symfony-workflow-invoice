@@ -35,21 +35,40 @@
                         <dd class="col-sm-9">{{ invoice.total }} €</dd>
                     </dl>
                 </div>
+{#                <div class="col-2 vstack gap-2">#}
+{#                    {% if workflow_can(invoice, 'to_edit') %}#}
+{#                        <a href="{{ path('app_invoice_edit',{id:invoice.id}) }}" class="btn btn-secondary">Editer</a>#}
+{#                    {% endif %}#}
+{#                    {% if workflow_can(invoice, 'to_send') %}#}
+{#                        <a href="{{ path('app_invoice_send',{id:invoice.id}) }}" class="btn btn-secondary">Envoyer</a>#}
+{#                    {% endif %}#}
+{#                    {% if workflow_can(invoice, 'to_paid') %}#}
+{#                        <a href="{{ path('app_invoice_paid',{id:invoice.id}) }}" class="btn btn-secondary">Réglée</a>#}
+{#                    {% endif %}#}
+{#                    {% if workflow_can(invoice, 'to_unpaid') %}#}
+{#                        <a href="{{ path('app_invoice_unpaid',{id:invoice.id}) }}" class="btn btn-secondary">Impayée</a>#}
+{#                    {% endif %}#}
+{#                    {% if workflow_can(invoice, 'to_cancel') %}#}
+{#                        <a href="{{ path('app_invoice_cancel',{id:invoice.id}) }}" class="btn btn-secondary">Annuler</a>#}
+{#                    {% endif %}#}
+
+{#                </div>#}
+
                 <div class="col-2 vstack gap-2">
                     {% if workflow_can(invoice, 'to_edit') %}
-                        <a href="{{ path('app_invoice_edit',{id:invoice.id}) }}" class="btn btn-secondary">Editer</a>
+                        <a href="{{ path('app_invoice_apply_workflow',{id:invoice.id,targetStatus:'to_edit'}) }}" class="btn btn-secondary">Editer</a>
                     {% endif %}
                     {% if workflow_can(invoice, 'to_send') %}
-                        <a href="{{ path('app_invoice_send',{id:invoice.id}) }}" class="btn btn-secondary">Envoyer</a>
+                        <a href="{{ path('app_invoice_apply_workflow',{id:invoice.id,targetStatus:'to_send'}) }}" class="btn btn-secondary">Envoyer</a>
                     {% endif %}
                     {% if workflow_can(invoice, 'to_paid') %}
-                        <a href="{{ path('app_invoice_paid',{id:invoice.id}) }}" class="btn btn-secondary">Réglée</a>
+                        <a href="{{ path('app_invoice_apply_workflow',{id:invoice.id,targetStatus:'to_paid'}) }}" class="btn btn-secondary">Réglée</a>
                     {% endif %}
                     {% if workflow_can(invoice, 'to_unpaid') %}
-                        <a href="{{ path('app_invoice_unpaid',{id:invoice.id}) }}" class="btn btn-secondary">Impayée</a>
+                        <a href="{{ path('app_invoice_apply_workflow',{id:invoice.id,targetStatus:'to_unpaid'}) }}" class="btn btn-secondary">Impayée</a>
                     {% endif %}
                     {% if workflow_can(invoice, 'to_cancel') %}
-                        <a href="{{ path('app_invoice_cancel',{id:invoice.id}) }}" class="btn btn-secondary">Annuler</a>
+                        <a href="{{ path('app_invoice_apply_workflow',{id:invoice.id,targetStatus:'to_cancel'}) }}" class="btn btn-secondary">Annuler</a>
                     {% endif %}
 
                 </div>
